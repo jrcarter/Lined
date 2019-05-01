@@ -1,0 +1,63 @@
+-- A line editor
+--
+-- Main-program procedure is Lined.Program
+--
+-- Invoked as (assuming lined-program is in the path)
+--    lined-program {filename}
+--    Starts the editor
+--    If filename is supplied, makes it the default file name
+--    If filename is supplied and exists, opens it and reads it into the buffer
+--    If the buffer is empty, the current line is zero, otherwise, it is 1
+--
+-- Commands can be preceded by zero or more line numbers, separated by commas (',') or semicolons (';')
+-- See the description of line numbers in lined-line_numbers.ads
+-- Commands take zero, one, or two line numbers; there are default line number for those that take more than zero
+-- When more line numbers are given than the command takes, the last zero, one, or two are used
+--
+-- Examples
+--    1,$p               Prints the entire buffer
+--    /pattern/;.-5,.+5p Prints lines around the next occurence of pattern (note the semicolon)
+--
+-- Commands, with the number of line numbers they take and their defaults are (things in [] are optional); a following p prints an
+-- affected or next line for confirmation
+--
+-- Line numbers  Command          Description
+--         [.+1]                  The null command: Prints the specified line
+--           [.] =[p]             Prints the line number of the specified line (for example, $=); p prints the line as well
+--           [.] a                Append: Reads lines from the keyboard and appends them after the specified line; input is
+--                                terminated by a line containing only a dot ('.')
+--         [.,.] c                Change: Replaces the specified lines with lines read from the keyboard as for Append
+--         [.,.] d[p]             Deletes the specified lines; p prints the line after the deleted lines or the last line if the
+--                                last line was deleted
+--               e [filename]     Edit: Clears the buffer, then reads the specified file (or the default file) into the buffer and
+--                                prints the number of lines read; if filename is given, makes it the default file
+--               f {filename]     File: Prints the specified filename (or the default file); if filename is given, makes it the
+--                                default file
+--           [.] i                Inserts lines read from the keyboard as for Append before the specified line
+--         [.,.] m dest[p]        Moves the specified lines to after line number dest; p prints the last line moved
+--         [.,.] p                Prints the specified lines
+--           [.] r [filename]     Reads the specified file (or the default file) into the buffer after the specified line; if
+--                                filename is given, makes it the default file
+--         [,.,] s/pat/sub/[g][p] Substitute: Without g, changes the 1st occurrence of pat (a regular expression) into sub on the
+--                                specified lines; instances of @ not preceded by & in sub are replaced by the matched text
+--                                With g, changes all the occurrences of pat into sub
+--                                p prints the last line
+--         [1,$] w [filename]     Writes the specified lines to filename (or the default file); if filename is given, makes it the
+--                                default file
+--
+-- The commands =, d, m, p, s, r, and w may be preceded by a global prefix
+--    [1,$] g/pattern/command
+--    [1,$] x/pattern/command
+-- g applies command to every line in the specified range that matches pattern; x, to every line that does not match
+-- command may include line numbers of its own; they are re-evaluated each time with the current line set to the matching line
+--
+-- Examples
+--    g/procedure/=p       Prints the line number and line of every line containing "procedure"
+--    1,10x/* end/s/#*?$// Blanks all lines that do not start with "end" in the first 10 lines
+--
+-- The regular expressions used for line numbers, global prefixes, and the substitute command are defined in
+-- PragmARC.Regular_Expression_Matcher and PragmARC.Character_Regular_Expression_Matcher; they are different from those used by grep
+--
+package Lined with Pure is
+   Invalid_Input : exception;
+end Lined;
