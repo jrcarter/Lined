@@ -6,8 +6,6 @@ with Lined.Buffer;
 with Lined.Line_Numbers;
 with Lined.Searching;
 
-with PragmARC.Character_Regular_Expression_Matcher;
-
 procedure Lined.Program is
    procedure Check_Global (Command : in String; Last : out Natural; Global : out Boolean; Start : out Natural; Stop : out Natural);
    -- if Command starts with 'g' or 'x', marks lines for global processing

@@ -1,3 +1,5 @@
+with PragmARC.Character_Regular_Expression_Matcher;
+
 separate (Lined.Program.Process)
 procedure Substitute (Command : in String; Current : in out Natural; Last : out Natural; Printing : out Boolean) is
    procedure Replace (Replacement : in String; Multi : in Boolean; Start : in Natural; Stop : in Natural; Current : in out Natural)
