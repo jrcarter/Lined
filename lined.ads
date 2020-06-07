@@ -59,5 +59,7 @@
 -- PragmARC.Regular_Expression_Matcher and PragmARC.Character_Regular_Expression_Matcher; they are different from those used by grep
 --
 package Lined with Pure is
+   pragma Assertion_Policy (Check);
+
    Invalid_Input : exception;
 end Lined;
