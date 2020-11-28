@@ -72,14 +72,14 @@ package Lined.Buffer with Abstract_State => State, Initializes => State is
       Pre    => Number in 1 .. Last;
    -- Returns line number Number in the buffer
 
-   function Next (Number : Positive) return Positive with
+   function Next (Number : Natural) return Positive with
       Global => State,
       Post   => (if Number < Last then Next'Result = Number + 1 else Next'Result = 1);
    -- Increments line number Number with wrap around
 
-   function Prev (Number : Positive) return Positive with
+   function Prev (Number : Natural) return Positive with
       Global => State,
-      Pre    => Number in 1 .. Last,
+      Pre    => Number in 0 .. Last,
       Post   => (if Number > 1 then Prev'Result = Number - 1 else Prev'Result = Last);
    -- Decrements line number Number with wrap around
 end Lined.Buffer;

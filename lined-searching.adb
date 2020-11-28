@@ -6,12 +6,12 @@ package body Lined.Searching with Refined_State => (State => (Cur_Pat, Processed
    use Ada.Strings.Unbounded;
 
    Cur_Pat   : Unbounded_String;
-   Processed : PragmARC.Character_Regular_Expression_Matcher.Processed_Pattern;
+   Processed : PragmARC.Matching.Character_Regular_Expression.Processed_Pattern;
 
    function Terminator (Pattern : String; Delimiter : Character; Classes : Boolean := True) return Positive is
       In_Class : Boolean := False;
 
-      use PragmARC.Character_Regular_Expression_Matcher;
+      use PragmARC.Matching.Character_Regular_Expression;
    begin -- Terminator
       Scan : for I in Pattern'Range loop
          if Pattern (I) = Delimiter and not In_Class and (I = Pattern'First or else Pattern (I - 1) /= Escape_Item) then
@@ -43,7 +43,7 @@ package body Lined.Searching with Refined_State => (State => (Cur_Pat, Processed
       Handle_Invalid : declare
          -- Empty
       begin -- Handle_Invalid
-         PragmARC.Character_Regular_Expression_Matcher.Process (Pattern => Pattern, Processed => Processed);
+         PragmARC.Matching.Character_Regular_Expression.Process (Pattern => Pattern, Processed => Processed);
       exception -- Handle_Invalid
       when others =>
          Cur_Pat := Null_Unbounded_String;
@@ -55,36 +55,39 @@ package body Lined.Searching with Refined_State => (State => (Cur_Pat, Processed
    function Current return String is (To_String (Cur_Pat) );
 
    function Search (Current : Natural; Forward : Boolean) return Positive is
-      Line : Natural := Current;
+      Line  : Natural := Current;
+      Count : Natural := 0;
    begin -- Search
-      if Buffer.Last = 0 or Cur_Pat = Null_Unbounded_String then
+     if Buffer.Last = 0 or Cur_Pat = Null_Unbounded_String then
          raise Invalid_Input;
       end if;
 
       Match : loop
-         if Forward then
+        if Forward then
             Line := Buffer.Next (Line);
          else
             Line := Buffer.Prev (Line);
          end if;
 
-         if PragmARC.Character_Regular_Expression_Matcher.Location (Processed, Buffer.Line (Line) ).Found then
+         if PragmARC.Matching.Character_Regular_Expression.Location (Processed, Buffer.Line (Line) ).Found then
             return Line;
          end if;
 
-         exit Match when Line = Current or (Current = 0 and Line = (if Forward then 1 else Buffer.Last) );
+         Count := Count + 1;
+
+         exit Match when Line = Current or (Current = 0 and Count > 1 and Line = (if Forward then 1 else Buffer.Last) );
       end loop Match;
 
       raise Invalid_Input;
    end Search;
 
-   function Search (Line : String) return PragmARC.Character_Regular_Expression_Matcher.Result is
+   function Search (Line : String) return PragmARC.Matching.Character_Regular_Expression.Result is
       -- Empty
    begin -- Search
       if Cur_Pat = Null_Unbounded_String then
          raise Invalid_Input;
       end if;
 
-      return PragmARC.Character_Regular_Expression_Matcher.Location (Processed, Line);
+      return PragmARC.Matching.Character_Regular_Expression.Location (Processed, Line);
    end Search;
 end Lined.Searching;

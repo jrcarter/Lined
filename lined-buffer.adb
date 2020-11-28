@@ -126,7 +126,7 @@ is
 
    function Line (Number : Positive) return String is (Line_List.Element (Number).Line);
 
-   function Next (Number : Positive) return Positive is (if Number >= Last then 1 else Number + 1);
+   function Next (Number : Natural) return Positive is (if Number >= Last then 1 else Number + 1);
 
-   function Prev (Number : Positive) return Positive is (if Number = 1 then Last else Number - 1);
+   function Prev (Number : Natural) return Positive is (if Number < 2 then Last else Number - 1);
 end Lined.Buffer;
