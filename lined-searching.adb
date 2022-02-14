@@ -2,7 +2,7 @@ with Ada.Strings.Unbounded;
 
 with Lined.Buffer;
 
-package body Lined.Searching with Refined_State => (State => (Cur_Pat, Processed) ) is
+package body Lined.Searching with SPARK_Mode, Refined_State => (State => (Cur_Pat, Processed) ) is
    use Ada.Strings.Unbounded;
 
    Cur_Pat   : Unbounded_String;

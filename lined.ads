@@ -7,7 +7,7 @@
 --    Starts the editor
 --    If filename is supplied, makes it the default file name
 --    If filename is supplied and exists, opens it and reads it into the buffer
---    If the buffer is empty, the current line is zero, otherwise, it is 1
+--    The current line is zero
 --
 -- Commands can be preceded by zero or more line numbers, separated by commas (',') or semicolons (';')
 -- See the description of line numbers in lined-line_numbers.ads
@@ -56,9 +56,10 @@
 --    1,10x/* end/s/#*?$// Blanks all lines that do not start with "end" in the first 10 lines
 --
 -- The regular expressions used for line numbers, global prefixes, and the substitute command are defined in
--- PragmARC.Regular_Expression_Matcher and PragmARC.Character_Regular_Expression_Matcher; they are different from those used by grep
+-- PragmARC.Matching.Regular_Expression and PragmARC.Matching.Character_Regular_Expression; they are different from those used by
+-- grep
 --
-package Lined with Pure is
+package Lined with SPARK_Mode, Pure is
    pragma Assertion_Policy (Check);
 
    Invalid_Input : exception;
