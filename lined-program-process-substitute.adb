@@ -1,4 +1,4 @@
-with PragmARC.Character_Regular_Expression_Matcher;
+with PragmARC.Matching.Character_Regular_Expression;
 
 separate (Lined.Program.Process)
 procedure Substitute (Command : in String; Current : in out Natural; Last : out Natural; Printing : out Boolean) is
@@ -29,7 +29,7 @@ procedure Substitute (Command : in String; Current : in out Natural; Last : out 
          end if;
 
          case Replacement (First) is
-         when Character_Regular_Expression_Matcher.Escape_Item =>
+         when Matching.Character_Regular_Expression.Escape_Item =>
             if First = Replacement'Last then
                return Replacement (First .. First);
             end if;
@@ -43,7 +43,7 @@ procedure Substitute (Command : in String; Current : in out Natural; Last : out 
       end Expanded_Replacment;
 
       procedure Replace_Rest (Head : in String; Line : in String; Number : in Positive) is
-         Result : constant Character_Regular_Expression_Matcher.Result := Searching.Search (Line);
+         Result : constant Matching.Character_Regular_Expression.Result := Searching.Search (Line);
       begin -- Replace_Rest
          if not Result.Found then
             Buffer.Replace (Number => Number, Line => Head & Line);
@@ -62,9 +62,9 @@ procedure Substitute (Command : in String; Current : in out Natural; Last : out 
    begin -- Replace
       All_Lines : for L in Start .. Stop loop
          One_Line : declare
-            Line   : constant String                                      := Buffer.Line (L);
-            First  : constant Natural                                     := Line'First;
-            Result : constant Character_Regular_Expression_Matcher.Result := Searching.Search (Line);
+            Line   : constant String                                       := Buffer.Line (L);
+            First  : constant Natural                                      := Line'First;
+            Result : constant Matching.Character_Regular_Expression.Result := Searching.Search (Line);
          begin -- One_Line
             if Result.Found then
                Matched := True;
