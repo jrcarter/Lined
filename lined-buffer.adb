@@ -3,7 +3,7 @@ with Ada.Directories;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-package body Lined.Buffer with Refined_State => (State => (Line_List, File_Name) )
+package body Lined.Buffer with SPARK_Mode, Refined_State => (State => (Line_List, File_Name) )
 is
    type Line_Info (Length : Natural) is record
       Mark : Boolean := False;

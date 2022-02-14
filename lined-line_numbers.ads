@@ -22,7 +22,7 @@
 -- a line number followed by a comma does not affect the current line number
 -- /abc/;//;// the 3rd following occurence of "abc"
 
-package Lined.Line_Numbers with Abstract_State => State, Initializes => State is
+package Lined.Line_Numbers with SPARK_Mode, Abstract_State => State, Initializes => State is
    procedure Get_Line_Number (Source : in String; Current : in Natural; Last : out Natural; Value : out Natural);
    -- Gets a full line number (sum/difference of components) from Source
    -- Current is the current line number

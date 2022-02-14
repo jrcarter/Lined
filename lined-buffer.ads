@@ -2,7 +2,7 @@
 -- Lines are numbered from 1 (the first line) to Last
 -- Line numbers are relative: when lines are added or deleted, the numbering of the other lines may change
 
-package Lined.Buffer with Abstract_State => State, Initializes => State is
+package Lined.Buffer with SPARK_Mode, Abstract_State => State, Initializes => State is
    procedure Clear with
       Global => (Output => State),
       Post   => Last = 0;
