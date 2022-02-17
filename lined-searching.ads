@@ -1,6 +1,7 @@
+with Lined.Buffer;
 with PragmARC.Matching.Character_Regular_Expression;
 
-package Lined.Searching with SPARK_Mode, Abstract_State => State, Initializes => State is
+package Lined.Searching with SPARK_Mode, Abstract_State => State is --, Initializes => State is
    function Terminator (Pattern : String; Delimiter : Character; Classes : Boolean := True) return Positive;
    -- Returns the index in Pattern of the first occurence of Delimiter that is not preceded by an escape
    -- (PragmARC.Matching.Character_Regular_Expression.Escape_Item) or, if Classes, in a class ('[', ']')
@@ -8,7 +9,7 @@ package Lined.Searching with SPARK_Mode, Abstract_State => State, Initializes =>
    -- Raises Invalid_Input if Pattern does not contain such an occurence of Delimiter
 
    procedure Process (Pattern : in String) with
-      Global => (In_Out => State),
+      Global => (Output => State),
       Post   => Pattern = Current;
    -- Processes Pattern for future searches and stores Pattern for calls to Search
    -- Makes Current return Pattern
@@ -21,11 +22,11 @@ package Lined.Searching with SPARK_Mode, Abstract_State => State, Initializes =>
    -- Initially returns ""
 
    function Search (Current : Natural; Forward : Boolean) return Positive with
-      Global => State;
+      Global => (Input => (Buffer.State, State) );
    -- Returns the number of the next (if Forward) or previous (if not Forward) line matching Searching.Current
    -- Raises Invalid_Input if no line matches
 
    function Search (Line : String) return PragmARC.Matching.Character_Regular_Expression.Result with
-      Global => State;
+      Global => (Input => State);
    -- Returns PragmARC.Character_Regular_Expression_Matcher.Location (Current, Line)
 end Lined.Searching;

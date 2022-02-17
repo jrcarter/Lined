@@ -7,18 +7,21 @@ with Lined.Line_Numbers;
 with Lined.Searching;
 
 procedure Lined.Program is
-   procedure Check_Global (Command : in String; Last : out Natural; Global : out Boolean; Start : out Natural; Stop : out Natural);
+   procedure Check_Global (Command : in String; Last : out Natural; Global : out Boolean; Start : out Natural; Stop : out Natural)
+   with Global => (Input => Line_Numbers.State, In_Out => Buffer.State);
    -- if Command starts with 'g' or 'x', marks lines for global processing
    -- Global indicates if a global prefix was encountered
 
-   procedure Process (Command : in String; Global : in Boolean; Current : in out Natural);
+   procedure Process (Command : in String; Global : in Boolean; Current : in out Natural)
+   with Global => (Input => Line_Numbers.State, In_Out => Buffer.State);
    -- Handle a single command after initial line-number parsing
    -- Global indicates if Command is being processed under a global prefix
 
    procedure Process_Global
       (Command : in String; Start : in Natural; Current : in out Natural; Curr_Save : in out Natural; Success : out Boolean)
    with
-      Pre => Start <= Buffer.Last;
+      Global => (In_Out => Buffer.State),
+      Pre    => Start <= Buffer.Last;
    -- Passes Command to Process for every line in the buffer that is marked
    -- Current is the current line number, which may be changed by Command
    -- Curr_Save becomes the current line number at the time of processing the last line processed, for resetting after a failure
@@ -26,10 +29,12 @@ procedure Lined.Program is
    -- Success is True if everything went well; False if anything raised an exception; we use this flag to ensure that Current will
    -- copy back the correct value in case of failure
 
-   procedure Set_Lines (Default_Start : in Natural; Default_Stop : in Natural; Start : in out Natural; Stop : in out Natural) with
-      Pre  => Default_Start <= Buffer.Last and Default_Stop <= Buffer.Last and Default_Start <= Default_Stop,
-      Post => (if Line_Numbers.Num_Numbers = 0 then Start = Default_Start and Stop = Default_Stop) and
-              Start <= Stop and Stop <= Buffer.Last;
+   procedure Set_Lines (Default_Start : in Natural; Default_Stop : in Natural; Start : in out Natural; Stop : in out Natural)
+   with
+      Global => (Input => Line_Numbers.State),
+      Pre    => Default_Start <= Buffer.Last and Default_Stop <= Buffer.Last and Default_Start <= Default_Stop,
+      Post   => (if Line_Numbers.Num_Numbers = 0 then Start = Default_Start and Stop = Default_Stop) and
+                Start <= Stop and Stop <= Buffer.Last;
    -- Sets Start and Stop to the defaults used if values have not been specified
    -- Raises Invalid_Input if the values are not suitable for the print command
 

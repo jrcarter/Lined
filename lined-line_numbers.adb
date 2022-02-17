@@ -10,6 +10,8 @@ package body Lined.Line_Numbers with SPARK_Mode, Refined_State => (State => (Num
    Line2     : Natural      := 0; -- End of range if multiple line numbers are given; line to operate on if a single number is given
 
    procedure Get_Line_Number (Source : in String; Current : in Natural; Last : out Natural; Value : out Natural) is
+      pragma SPARK_Mode (Off);
+
       subtype Digit is Character range '0' .. '9';
 
       Forward : constant Character := '/';
@@ -17,7 +19,7 @@ package body Lined.Line_Numbers with SPARK_Mode, Refined_State => (State => (Num
       Digit_Set  : constant Ada.Strings.Maps.Character_Set :=
          Ada.Strings.Maps.To_Set (Span => (Low => Digit'First, High => Digit'Last) );
 
-      procedure Get_Number (Source : in String; Last : out Natural; Value : out Natural);
+      procedure Get_Number (Source : in String; Last : out Natural; Value : out Natural) with Pre => Source'Length > 0;
       -- Gets a Component from Source
       -- Last is set to the index of the last Character in the component
       -- Last < Source'First if Source doesn't begin with a component
@@ -63,7 +65,7 @@ package body Lined.Line_Numbers with SPARK_Mode, Refined_State => (State => (Num
       Index : Natural := Ada.Strings.Fixed.Index_Non_Blank (Source);
       Final : Natural;
       Comp  : Natural;
-      Sign  : Integer := 1;
+      Sign  : Integer;
    begin -- Get_Line_Number
       Last := 0;
       Get_Number (Source => Source (Index .. Source'Last), Last => Final, Value => Value);
@@ -103,6 +105,9 @@ package body Lined.Line_Numbers with SPARK_Mode, Refined_State => (State => (Num
       end if;
 
       Last := (if Index = 0 then Source'Last else Index - 1);
+   exception -- Get_Line_Number
+   when others => -- Typically a range check failed
+      raise Invalid_Input;
    end Get_Line_Number;
 
    procedure Parse (Command : in String; Current : in out Natural; Last : out Natural) is
@@ -111,7 +116,6 @@ package body Lined.Line_Numbers with SPARK_Mode, Refined_State => (State => (Num
       Index : Natural := Command'First;
       Final : Natural;
    begin -- Parse
-      Last      := 0;
       Num_Found := 0;
       Line1     := 0;
       Line2     := 0;
@@ -123,6 +127,8 @@ package body Lined.Line_Numbers with SPARK_Mode, Refined_State => (State => (Num
          Get_Line_Number (Source => Command (Index .. Command'Last), Current => Current, Last => Final, Value => Line2);
 
          exit All_Numbers when Final < Index;
+
+         pragma Assert (Final <= Command'Last);
 
          Num_Found := Integer'Min (Num_Found + 1, Number_Count'Last);
          Index := Ada.Strings.Fixed.Index_Non_Blank (Command (Final + 1 .. Command'Last) );
