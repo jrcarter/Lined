@@ -53,13 +53,10 @@ package Lined.Line_Numbers with SPARK_Mode, Abstract_State => State, Initializes
 
    subtype Number_Count is Integer range 0 .. 2;
 
-   function Num_Numbers return Number_Count with
-      Global => (Input => State);
+   function Num_Numbers return Number_Count With Global => (Input => State);
 
-   function Start return Natural with
-      Global => (Input => State);
+   function Start return Natural With Global => (Input => State);
 
-   function Stop return Natural with
-      Global => (Input => State);
+   function Stop return Natural With Global => (Input => State);
    -- These functions initially return 0
 end Lined.Line_Numbers;

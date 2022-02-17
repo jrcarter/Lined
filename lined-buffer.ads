@@ -17,7 +17,7 @@ package Lined.Buffer with SPARK_Mode, Abstract_State => State, Initializes => St
       Post   => Marked (Number) = Status;
    -- Marks (Status True) or unmarks (Status False) line Number
 
-   function Marked (Number : Positive) return Boolean With Global => State;
+   function Marked (Number : Positive) return Boolean With Global => (Input => State);
    -- Returns the mark status of line Number
 
    procedure Clear_Marks With Global => (In_Out => State),
@@ -40,8 +40,9 @@ package Lined.Buffer with SPARK_Mode, Abstract_State => State, Initializes => St
 
    procedure Replace (Number : in Positive; Line : in String)
    with
-      Pre  => Last < Integer'Last and then Number in 1 .. Last,
-      Post => Buffer.Line (Number) = Line;
+      Global => (In_Out => State),
+      Pre    => Last < Integer'Last and then Number in 1 .. Last,
+      Post   => Buffer.Line (Number) = Line;
    -- Makes line Number in the buffer have the value Line
 
    function Default_File return String with Global => (Input => State);
@@ -49,8 +50,9 @@ package Lined.Buffer with SPARK_Mode, Abstract_State => State, Initializes => St
 
    procedure Set_File (Name : in String)
    with
-      Pre  => Name /= "",
-      Post => Default_File = Name;
+      Global => (In_Out => State),
+      Pre    => Name /= "",
+      Post   => Default_File = Name;
 
    procedure Load (File_Name : in String)
    with

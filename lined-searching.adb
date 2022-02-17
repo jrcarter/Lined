@@ -85,7 +85,6 @@ package body Lined.Searching with SPARK_Mode, Refined_State => (State => (Cur_Pa
 
    function Search (Line : String) return PragmARC.Matching.Character_Regular_Expression.Result is
       pragma SPARK_Mode (Off);
-      -- Empty
    begin -- Search
       if Cur_Pat = Null_Unbounded_String then
          raise Invalid_Input;
