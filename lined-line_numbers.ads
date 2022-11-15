@@ -25,7 +25,7 @@
 with Lined.Buffer;
 with Lined.Searching;
 
-package Lined.Line_Numbers with SPARK_Mode, Abstract_State => State, Initializes => State is
+package Lined.Line_Numbers is
    procedure Get_Line_Number (Source : in String; Current : in Natural; Last : out Natural; Value : out Natural)
    with Pre => Source'Length > 0 and Source'Last < Integer'Last;
    -- Gets a full line number (sum/difference of components) from Source
@@ -36,8 +36,7 @@ package Lined.Line_Numbers with SPARK_Mode, Abstract_State => State, Initializes
 
    procedure Parse (Command : in String; Current : in out Natural; Last : out Natural)
    with
-      Global => (Output => State),
-      Pre    => Command'Length > 0 and Command'Last < Integer'Last;
+      Pre => Command'Length > 0 and Command'Last < Integer'Last;
    -- Parses line numbers from the beginning of Command; Current is the current line number
    -- Last is set to the index in Command of the last character included in a line number; if there are no line numbers, Last = 0
    -- Sets the results of Num_Numbers, Start, and Stop (and Searching.Current)
@@ -53,10 +52,10 @@ package Lined.Line_Numbers with SPARK_Mode, Abstract_State => State, Initializes
 
    subtype Number_Count is Integer range 0 .. 2;
 
-   function Num_Numbers return Number_Count With Global => (Input => State);
+   function Num_Numbers return Number_Count;
 
-   function Start return Natural With Global => (Input => State);
+   function Start return Natural;
 
-   function Stop return Natural With Global => (Input => State);
+   function Stop return Natural;
    -- These functions initially return 0
 end Lined.Line_Numbers;

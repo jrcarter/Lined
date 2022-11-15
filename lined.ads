@@ -59,7 +59,7 @@
 -- PragmARC.Matching.Regular_Expression and PragmARC.Matching.Character_Regular_Expression; they are different from those used by
 -- grep
 --
-package Lined with SPARK_Mode, Pure is
+package Lined with Pure is
    pragma Assertion_Policy (Check);
 
    Invalid_Input : exception;

@@ -4,14 +4,12 @@ with Ada.Strings.Maps;
 with Lined.Buffer;
 with Lined.Searching;
 
-package body Lined.Line_Numbers with SPARK_Mode, Refined_State => (State => (Num_Found, Line1, Line2) ) is
+package body Lined.Line_Numbers is
    Num_Found : Number_Count := 0;
    Line1     : Natural      := 0; -- Start of range if multiple line numbers are given
    Line2     : Natural      := 0; -- End of range if multiple line numbers are given; line to operate on if a single number is given
 
    procedure Get_Line_Number (Source : in String; Current : in Natural; Last : out Natural; Value : out Natural) is
-      pragma SPARK_Mode (Off);
-
       subtype Digit is Character range '0' .. '9';
 
       Forward : constant Character := '/';

@@ -8,12 +8,12 @@ procedure Process (Command : in String; Global : in Boolean; Current : in out Na
    -- Lines are terminated by a line containing only '.'
 
    procedure Change (Start : in Positive; Stop : in Positive) with
-      Pre  => Start <= Stop and Stop <= Buffer.Last;
+      Pre => Start <= Stop and Stop <= Buffer.Last;
    -- Replaces the existing lines Start .. Stop with input as in Append or Insert
    -- The current line will be set to the last input line added
 
    procedure Delete (Start : in Positive; Stop : in Positive; Current : in out Natural) with
-      Pre  => Start <= Stop and Stop <= Buffer.Last;
+      Pre => Start <= Stop and Stop <= Buffer.Last;
    -- Deletes lines Start .. Stop
    -- If Stop was the old Buffer.Last, Current will be the new Buffer.Last
    -- Otherwise, Current will be Start (which now is the line after the last line deleted)
@@ -33,7 +33,7 @@ procedure Process (Command : in String; Global : in Boolean; Current : in out Na
    -- Current will be set to the last line added
 
    procedure Move (Start : in Positive; Stop : in Positive; Destination : in Natural; Current : in out Natural) with
-      Pre  => Start <= Stop and Stop <= Buffer.Last and Destination <= Buffer.Last and Destination not in Start .. Stop - 1;
+      Pre => Start <= Stop and Stop <= Buffer.Last and Destination <= Buffer.Last and Destination not in Start .. Stop - 1;
    -- Moves lines Start .. Stop after Destination
    -- The current line will be set to the last line moved
 

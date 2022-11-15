@@ -3,8 +3,7 @@ with Ada.Directories;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-package body Lined.Buffer with SPARK_Mode => Off, Refined_State => (State => (Line_List, File_Name) )
-is
+package body Lined.Buffer is
    type Line_Info (Length : Natural) is record
       Mark : Boolean := False;
       Line : String (1 .. Length);
@@ -89,8 +88,6 @@ is
          -- Empty
       begin -- Handle_EOF
          All_Lines : loop
-            exit All_Lines when Ada.Text_IO.End_Of_File (File);
-
             Insert (Line => Ada.Text_IO.Get_Line (File), Before => Last + 1);
          end loop All_Lines;
       exception -- Handle_EOF

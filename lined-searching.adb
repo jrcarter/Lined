@@ -2,7 +2,7 @@ with Ada.Strings.Unbounded;
 
 with Lined.Buffer;
 
-package body Lined.Searching with SPARK_Mode, Refined_State => (State => (Cur_Pat, Processed) ) is
+package body Lined.Searching is
    use Ada.Strings.Unbounded;
 
    Cur_Pat   : Unbounded_String := Null_Unbounded_String;
@@ -36,7 +36,7 @@ package body Lined.Searching with SPARK_Mode, Refined_State => (State => (Cur_Pa
    end Terminator;
 
    procedure Process (Pattern : in String) is
-      pragma SPARK_Mode (Off);
+      -- Empty
    begin -- Process
       Cur_Pat := To_Unbounded_String (Pattern);
 
@@ -55,8 +55,6 @@ package body Lined.Searching with SPARK_Mode, Refined_State => (State => (Cur_Pa
    function Current return String is (To_String (Cur_Pat) );
 
    function Search (Current : Natural; Forward : Boolean) return Positive is
-      pragma SPARK_Mode (Off);
-
       Line  : Natural := Current;
       Count : Natural := 0;
    begin -- Search
@@ -84,7 +82,7 @@ package body Lined.Searching with SPARK_Mode, Refined_State => (State => (Cur_Pa
    end Search;
 
    function Search (Line : String) return PragmARC.Matching.Character_Regular_Expression.Result is
-      pragma SPARK_Mode (Off);
+      -- Empty
    begin -- Search
       if Cur_Pat = Null_Unbounded_String then
          raise Invalid_Input;
