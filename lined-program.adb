@@ -7,7 +7,8 @@ with Lined.Line_Numbers;
 with Lined.Searching;
 
 procedure Lined.Program is
-   procedure Check_Global (Command : in String; Last : out Natural; Global : out Boolean; Start : out Natural; Stop : out Natural);
+   procedure Check_Global
+      (Command : in String; Last : out Natural; Global : out Boolean; Start : out Natural; Stop : out Natural);
    -- if Command starts with 'g' or 'x', marks lines for global processing
    -- Global indicates if a global prefix was encountered
 
@@ -79,8 +80,8 @@ procedure Lined.Program is
    begin -- Process_Global
       Success := True;
 
-      -- Some commands can scramble the buffer pretty well, so we keep looking for marked lines and processing them until there are
-      -- none left
+      -- Some commands can scramble the buffer pretty well, so we keep looking for marked lines and processing them until there
+      -- are none left
 
       Match_All : loop
          if not Buffer.Marked (Line) then
@@ -126,11 +127,12 @@ procedure Lined.Program is
 begin -- Lined.Program
    if Ada.Command_Line.Argument_Count > 0 then
       Buffer.Load (File_Name => Ada.Command_Line.Argument (1) );
+      Ada.Text_IO.Put_Line (Item => Buffer.Last'Image);
    end if;
 
    All_Commands : loop
       One_Line : declare
-         Line : constant String  := Ada.Text_IO.Get_Line;
+         Line : constant String := Ada.Text_IO.Get_Line;
 
          Curr_Save : Natural := Current;
          Last      : Natural;

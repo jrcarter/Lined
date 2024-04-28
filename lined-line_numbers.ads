@@ -36,7 +36,7 @@ package Lined.Line_Numbers is
 
    procedure Parse (Command : in String; Current : in out Natural; Last : out Natural)
    with
-      Pre => Command'Length > 0 and Command'Last < Integer'Last;
+      Pre => Command'Last < Integer'Last;
    -- Parses line numbers from the beginning of Command; Current is the current line number
    -- Last is set to the index in Command of the last character included in a line number; if there are no line numbers, Last = 0
    -- Sets the results of Num_Numbers, Start, and Stop (and Searching.Current)
